@@ -1,94 +1,162 @@
-# Obsidian Sample Plugin
+# Canvas to Notes Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Convert Obsidian canvas files into folders of linked markdown notes with bidirectional linking and frontmatter.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Overview
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+This plugin transforms your Obsidian canvas files into well-structured note collections:
 
-## First time developing plugins?
+- **Extracts canvas nodes** into individual markdown files
+- **Preserves relationships** through bidirectional links
+- **Adds parent and child sections** to maintain the graph structure
+- **Handles duplicates** intelligently with numbered suffixes
+- **Creates organized folders** based on canvas names
 
-Quick starting guide for new plugin devs:
+## Features
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### 🎯 Smart Filename Extraction
+- Extracts filenames from **headings** (##, ###, etc.) in node content
+- Falls back to **first 3 words** if no heading exists
+- Handles **empty nodes** gracefully with unique identifiers
 
-## Releasing new releases
+### 🔗 Bidirectional Linking
+- **Parent references** in a "Parents" section at the top of each note
+- **Child links** in a "Links" section at the end of each note
+- Maintains the **relationship graph** from your canvas
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+### 📁 Intelligent Organization
+- Creates a **folder** named after the canvas file
+- **Handles duplicates** by appending numeric suffixes
+- Sanitizes filenames by removing invalid characters
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+### ✨ Edge Case Handling
+- Duplicate filenames get numbered (e.g., "Note 2.md", "Note 3.md")
+- Special characters are sanitized from filenames
+- Image references are preserved in note content
+- Empty or missing nodes are handled gracefully
 
-## Adding your plugin to the community plugin list
+## Usage
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+1. Open a `.canvas` file in Obsidian
+2. Open the **Command Palette** (Cmd/Ctrl + P)
+3. Run **"Convert Canvas to Notes"**
+4. A new folder will be created with all your notes!
 
-## How to use
+## Example Output
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### Canvas Structure
+```
+Apache Flink.canvas
+├─ Node: "## Apache Flink"
+├─ Node: "## How Flink Works?"
+├─ Node: "## Basic Concepts"
+└─ Edges connecting them
+```
 
-## Manually installing the plugin
+### Generated Files
+```
+Apache Flink/
+├─ Apache Flink.md
+├─ How Flink Works.md
+└─ Basic Concepts.md
+```
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Apache Flink.md
+```markdown
+## Apache Flink
+- Tool for stateful stream processing
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint ./src/`
+## Child
+- [[How Flink Works]]
+- [[Basic Concepts]]
+```
 
-## Funding URL
+### How Flink Works.md
+```markdown
+## Parents
+- [[Apache Flink]]
 
-You can include funding URLs where people who use your plugin can financially support it.
+## How Flink Works?
+Content from canvas node...
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+## Child
+- [[Basic Concepts]]
+```
 
+## Installation
+
+### Manual Installation
+1. Download `main.js`, `manifest.json`, and `styles.css` (if present)
+2. Create folder: `<vault>/.obsidian/plugins/canvas-to-notes/`
+3. Copy the files into this folder
+4. Reload Obsidian
+5. Enable the plugin in **Settings → Community plugins**
+
+### Building from Source
+```bash
+# Install dependencies
+npm install
+
+# Development build (watch mode)
+npm run dev
+
+# Production build
+npm run build
+```
+
+## Development
+
+### Project Structure
+```
+canvas-to-notes/
+├─ main.ts                 # Plugin entry point
+├─ types.ts               # TypeScript interfaces
+├─ canvas-parser.ts       # Canvas file parsing
+├─ filename-utils.ts      # Filename extraction & sanitization
+├─ link-graph.ts          # Relationship graph builder
+├─ note-generator.ts      # Note content generation
+└─ converter.ts           # Main conversion logic
+```
+
+### Code Organization
+The plugin follows best practices for Obsidian plugin development:
+- **Minimal `main.ts`**: Only handles plugin lifecycle
+- **Modular architecture**: Each file has a single responsibility
+- **Type safety**: Full TypeScript with strict mode
+- **Error handling**: Comprehensive validation and user notifications
+
+## Technical Details
+
+### Canvas File Format
+Canvas files are JSON with this structure:
 ```json
 {
-    "fundingUrl": "https://buymeacoffee.com"
+  "nodes": [
+    {"id": "...", "type": "text", "text": "## Heading\nContent", ...}
+  ],
+  "edges": [
+    {"id": "...", "fromNode": "nodeId1", "toNode": "nodeId2", ...}
+  ]
 }
 ```
 
-If you have multiple URLs, you can also do:
+### Processing Flow
+1. **Parse Canvas** → Extract nodes and edges
+2. **Build Node Mappings** → Map node IDs to filenames
+3. **Handle Duplicates** → Resolve duplicate filenames
+4. **Build Link Graph** → Map parent-child relationships
+5. **Generate Notes** → Create files with frontmatter and links
+6. **Save Files** → Write all notes to folder
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+## Requirements
 
-## API Documentation
+- Obsidian v0.15.0 or higher
+- Node.js v16+ (for development)
 
-See https://github.com/obsidianmd/obsidian-api
+## License
+
+MIT
+
+## Support
+
+If you encounter any issues or have feature requests, please create an issue on GitHub.
