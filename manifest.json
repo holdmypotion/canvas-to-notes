@@ -4,8 +4,7 @@
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Convert Obsidian canvas files into folders of linked markdown notes with bidirectional linking",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"author": "holdmypotion",
+	"authorUrl": "https://github.com/holdmypotion",
 	"isDesktopOnly": false
 }
