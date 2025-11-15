@@ -157,14 +157,6 @@ Canvas files are JSON with this structure:
 
 This plugin was **fully created by AI** using **Claude Sonnet 4.5**. The complete implementation plan and development process can be found in `.ai/thoughts/Canvas-to-Notes-Plugin-Plan.md`.
 
-The AI:
-- Designed the architecture and modular code structure
-- Implemented all features following Obsidian plugin best practices
-- Handled edge cases and error scenarios
-- Generated comprehensive documentation
-
-This demonstrates the capability of AI-assisted development for creating production-ready Obsidian plugins from concept to completion.
-
 ## License
 
 MIT
