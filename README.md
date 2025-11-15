@@ -1,6 +1,6 @@
 # Canvas to Notes Plugin
 
-Convert Obsidian canvas files into folders of linked markdown notes with bidirectional linking and frontmatter.
+Convert canvas files into folders of linked markdown notes with bidirectional linking.
 
 ## Overview
 
