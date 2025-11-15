@@ -1,7 +1,7 @@
 {
 	"id": "canvas-to-notes",
 	"name": "Canvas to Notes",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Convert Obsidian canvas files into folders of linked markdown notes with bidirectional linking",
 	"author": "holdmypotion",
