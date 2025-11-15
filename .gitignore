@@ -131,6 +131,7 @@ dist
 
 # Obsidian specific
 data.json
+main.js
 
 # Mac
 .DS_Store
